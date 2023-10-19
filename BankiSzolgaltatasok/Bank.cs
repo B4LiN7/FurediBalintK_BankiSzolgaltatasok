@@ -22,7 +22,11 @@ namespace BankiSzolgaltatasok
                 long osszHitel = 0;
                 for (int i = 0; i < szamlaLista.Count; i++)
                 {
-                    osszHitel += (szamlaLista[i] as HitelSzamla).HitelKeret;
+                    HitelSzamla szamla = szamlaLista[i] as HitelSzamla;
+                    if (szamla != null)
+                    {
+                        osszHitel += szamla.HitelKeret;
+                    }
                 }
                 return osszHitel;
             }

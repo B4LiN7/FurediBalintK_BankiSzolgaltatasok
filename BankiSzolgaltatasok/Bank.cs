@@ -22,7 +22,7 @@ namespace BankiSzolgaltatasok
                 long osszHitel = 0;
                 for (int i = 0; i < szamlaLista.Count; i++)
                 {
-                    osszHitel += szamlaLista[i].HitelKeret;
+                    osszHitel += (szamlaLista[i] as HitelSzamla).HitelKeret;
                 }
                 return osszHitel;
             }
@@ -30,11 +30,21 @@ namespace BankiSzolgaltatasok
 
         public Szamla SzamlaNyitas(Tulajdonos tulajdonos, int hitelKeret)
         {
+            Szamla szamla;
             if (hitelKeret < 0)
             {
-                throw new Exception("A negatív hitelkeret nem érvényes");
+                throw new ArgumentException();
             }
-            return new HitelSzamla(tulajdonos, hitelKeret);
+            else if (hitelKeret == 0)
+            {
+                szamla = new MegtakaritasiSzamla(tulajdonos);
+            }
+            else 
+            {
+                szamla = new HitelSzamla(tulajdonos, hitelKeret);
+            }
+            szamlaLista.Add(szamla);
+            return szamla;
         }
 
         public long GetOsszEgyenleg(Tulajdonos tulajdonos)
@@ -42,24 +52,30 @@ namespace BankiSzolgaltatasok
             long osszEgyenleg = 0;
             for (int i = 0; i < szamlaLista.Count; i++)
             {
-                osszEgyenleg += szamlaLista[i].AktualisEgyenleg;
+                if (szamlaLista[i].Tulajdonos == tulajdonos)
+                {
+                    osszEgyenleg += szamlaLista[i].AktualisEgyenleg;
+                }
             }
             return osszEgyenleg;
         }
 
         public Szamla GetLegnagyobbEgyenleguSzamla(Tulajdonos tulajdons)
         {
-            Szamla legnagyobbSzamla = null;
+
+            int legnagyobbSzamlaErteke = int.MinValue;
+            int index = -1;
             for (int i = 0; i < szamlaLista.Count; i++)
             {
-                if (szamlaLista[i].Tulajdonos == tulajdons && legnagyobbSzamla.AktualisEgyenleg < szamlaLista[i].AktualisEgyenleg)
+                if (szamlaLista[i].Tulajdonos == tulajdons && legnagyobbSzamlaErteke < szamlaLista[i].AktualisEgyenleg)
                 {
-                    legnagyobbSzamla = szamlaLista[i];
+                    legnagyobbSzamlaErteke = szamlaLista[i].AktualisEgyenleg;
+                    index = i;
                 }
             }
-            if (legnagyobbSzamla != null)
+            if (index >= 0)
             {
-                return legnagyobbSzamla;
+                return szamlaLista[index];
             }
             return null;
         }

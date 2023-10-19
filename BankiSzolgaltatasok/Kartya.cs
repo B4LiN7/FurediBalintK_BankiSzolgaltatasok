@@ -11,7 +11,7 @@ namespace BankiSzolgaltatasok
         private string kartyaSzam;
         private Szamla szamla;
 
-        public Kartya(Tulajdonos tulajdonos, string kartyaSzam, Szamla szamla) : base(tulajdonos)
+        public Kartya(Tulajdonos tulajdonos, Szamla szamla, string kartyaSzam) : base(tulajdonos)
         {
             this.kartyaSzam = kartyaSzam;
             this.szamla = szamla;

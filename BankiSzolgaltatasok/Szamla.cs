@@ -19,22 +19,14 @@ namespace BankiSzolgaltatasok
 
         public void Befizet(int osszeg)
         {
-            aktualisEgyenleg += Math.Abs(osszeg);
+            this.aktualisEgyenleg += Math.Abs(osszeg);
         }
 
-        public bool Kivesz(int osszeg)
-        {
-            if (aktualisEgyenleg - Math.Abs(osszeg) > 0)
-            {
-                aktualisEgyenleg -= Math.Abs(osszeg);
-                return true;
-            }
-            return false;       
-        }
+        public abstract bool Kivesz(int osszeg);
 
         public Kartya UjKartya(string kartyaSzam)
         {
-            return new Kartya(base.Tulajdonos, kartyaSzam, this);
+            return new Kartya(base.Tulajdonos, this, kartyaSzam);
         }
     }
 }

@@ -17,9 +17,9 @@ namespace BankiSzolgaltatasok
 
         public int HitelKeret { get => hitelKeret; }
 
-        public new bool Kivesz(int osszeg)
+        public override bool Kivesz(int osszeg)
         {
-            if (base.aktualisEgyenleg - Math.Abs(osszeg) > hitelKeret)
+            if ((base.aktualisEgyenleg - Math.Abs(osszeg) + this.hitelKeret) >= 0)
             {
                 base.aktualisEgyenleg -= Math.Abs(osszeg);
                 return true;

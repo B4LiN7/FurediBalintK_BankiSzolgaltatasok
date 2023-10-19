@@ -22,7 +22,7 @@ namespace BankiSzolgaltatasok
             aktualisEgyenleg += Math.Abs(osszeg);
         }
 
-        bool Kivesz(int osszeg)
+        public bool Kivesz(int osszeg)
         {
             if (aktualisEgyenleg - Math.Abs(osszeg) > 0)
             {
@@ -30,6 +30,11 @@ namespace BankiSzolgaltatasok
                 return true;
             }
             return false;       
+        }
+
+        public Kartya UjKartya(string kartyaSzam)
+        {
+            return new Kartya(base.Tulajdonos, kartyaSzam, this);
         }
     }
 }
